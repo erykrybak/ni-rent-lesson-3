@@ -174,9 +174,9 @@ if __name__ == "__main__":
     manager = Manager(parameters)
 
     for apartment in manager.apartments.values():
-        print(apartment.key, apartment.name, apartment.location, apartment.area_m2, "m2")
+        print(f"Klucz: {apartment.key}, Nazwa: {apartment.name}, Lokalizacja: {apartment.location}, Metraż: {apartment.area_m2} m2")
         for room in apartment.rooms.values():
-            print(" - ", room.name, room.area_m2, "m2")
+            print(f"  Nazwa pokoju: {room.name}, Metraż: {room.area_m2} m2")
 
         for bill in manager.bills:
             if bill.apartment == apartment.key:
