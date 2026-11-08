@@ -16,5 +16,14 @@
         "deposit_pln": 2400.0,
         "date_agreement_from": "2025-02-01",
         "date_agreement_to": "2025-12-31"
+    },
+    "tenant-3": {
+        "name": "tenant-3",
+        "apartment": "apart-polanka",
+        "room": "room-tiny",
+        "rent_pln": 3000.0,
+        "deposit_pln": 15000.0,
+        "date_agreement_from": "2025-01-01",
+        "date_agreement_to": "2025-12-31"
     }
 }
