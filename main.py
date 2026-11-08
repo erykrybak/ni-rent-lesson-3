@@ -102,7 +102,7 @@ class Manager:
 
 
 class ApartmentSettlement(BaseModel):
-    apartment_key: str
+    apartment_name: str
     settlement_year: int
     settlement_month: int
     total_bills: float
@@ -111,10 +111,10 @@ class ApartmentSettlement(BaseModel):
     remaining_amount: float
 
     @staticmethod
-    def calculate(manager: 'Manager', apartment_key: str, year: int, month: int):
+    def calculate(manager: 'Manager', apartment_name: str, year: int, month: int):
         bills = [
             b for b in manager.bills 
-            if b.apartment == apartment_key 
+            if b.apartment == apartment_name 
             and b.settlement_year == year 
             and b.settlement_month == month
         ]
@@ -122,7 +122,7 @@ class ApartmentSettlement(BaseModel):
 
         apartment_tenants = [
             t for t in manager.tenants.values() 
-            if t.apartment == apartment_key
+            if t.apartment == apartment_name
         ]
         total_rent = sum(t.rent_pln for t in apartment_tenants)
 
@@ -139,7 +139,7 @@ class ApartmentSettlement(BaseModel):
         remaining_amount = total_due - total_transfers
 
         return ApartmentSettlement(
-            apartment_key=apartment_key,
+            apartment_name=apartment_name,
             settlement_year=year,
             settlement_month=month,
             total_bills=total_bills,
