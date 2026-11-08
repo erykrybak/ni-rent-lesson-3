@@ -85,7 +85,7 @@ class Bill(BaseModel):
 
 class TenantSettlement(BaseModel):
     tenant: Tenant
-    apartment: Apartment
+    flat: Apartment
     settlement_year: int
     settlement_month: int
 
