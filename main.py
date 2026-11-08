@@ -101,6 +101,54 @@ class Manager:
         self.bills = Bill.from_json_file(self.parameters.bills_json_path)
 
 
+class ApartmentSettlement(BaseModel):
+    apartment_name: str
+    settlement_year: int
+    settlement_month: int
+    total_bills: float
+    total_rent: float
+    total_transfers: float
+    remaining_amount: float
+
+    @staticmethod
+    def calculate(manager: 'Manager', apartment_name: str, year: int, month: int):
+        bills = [
+            b for b in manager.bills 
+            if b.apartment == apartment_name 
+            and b.settlement_year == year 
+            and b.settlement_month == month
+        ]
+        total_bills = sum(b.amount_pln for b in bills)
+
+        apartment_tenants = [
+            t for t in manager.tenants.values() 
+            if t.apartment == apartment_name
+        ]
+        total_rent = sum(t.rent_pln for t in apartment_tenants)
+
+        tenant_names = {t.name for t in apartment_tenants}
+        transfers = [
+            tr for tr in manager.transfers 
+            if tr.tenant in tenant_names 
+            and tr.settlement_year == year 
+            and tr.settlement_month == month
+        ]
+        total_transfers = sum(tr.amount_pln for tr in transfers)
+
+        total_due = total_bills + total_rent
+        remaining_amount = total_due - total_transfers
+
+        return ApartmentSettlement(
+            apartment_name=apartment_name,
+            settlement_year=year,
+            settlement_month=month,
+            total_bills=total_bills,
+            total_rent=total_rent,
+            total_transfers=total_transfers,
+            remaining_amount=remaining_amount
+        )
+
+
 if __name__ == '__main__':
     parameters = Parameters()
     manager = Manager(parameters)
