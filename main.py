@@ -130,9 +130,10 @@ class ApartmentSettlement(BaseModel):
     remaining_amount: float
 
     @staticmethod
-    def calculate(manager: 'Manager', apartment_name: str, year: int, month: int):
+    def calculate(manager: "Manager", apartment_name: str, year: int, month: int):
         bills = [
-            b for b in manager.bills
+            b
+            for b in manager.bills
             if b.apartment == apartment_name
             and b.settlement_year == year
             and b.settlement_month == month
@@ -140,14 +141,14 @@ class ApartmentSettlement(BaseModel):
         total_bills = sum(b.amount_pln for b in bills)
 
         apartment_tenants = [
-            t for t in manager.tenants.values()
-            if t.apartment == apartment_name
+            t for t in manager.tenants.values() if t.apartment == apartment_name
         ]
         total_rent = sum(t.rent_pln for t in apartment_tenants)
 
         tenant_names = {t.name for t in apartment_tenants}
         transfers = [
-            tr for tr in manager.transfers
+            tr
+            for tr in manager.transfers
             if tr.tenant in tenant_names
             and tr.settlement_year == year
             and tr.settlement_month == month
@@ -164,23 +165,23 @@ class ApartmentSettlement(BaseModel):
             total_bills=total_bills,
             total_rent=total_rent,
             total_transfers=total_transfers,
-            remaining_amount=remaining_amount
+            remaining_amount=remaining_amount,
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parameters = Parameters()
     manager = Manager(parameters)
 
     for apartment in manager.apartments.values():
         print(apartment.key, apartment.name, apartment.location, apartment.area_m2, "m2")
         for room in apartment.rooms.values():
-            print("  ", room.name, room.area_m2, "m2")
+            print(" - ", room.name, room.area_m2, "m2")
 
         for bill in manager.bills:
             if bill.apartment == apartment.key:
                 print(
-                    "  ",
+                    " - ",
                     bill.amount_pln,
                     bill.date_due,
                     bill.settlement_year,
